@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./profileupdate.css">
+    <title>Profile Settings</title>
+<style>
+
+</style>
+</head>
+<body>
+    <!-- Hamburger Menu (Mobile Only) -->
+    <button class="hamburger" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay -->
+    <div class="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+                <div class="sidebar-icon">P</div>
+                    Profile
+            </div>
+            <button class="close-btn" onclick="closeSidebar()">×</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="#" class="active" data-searchable>
+                    <span class="icon">👤</span>
+                    Profile
+                </a>
+            </li>
+            <li>
+                <a href="#" data-searchable>
+                    <span class="icon">⚙️</span>
+                    Settings
+                </a>
+            </li>
+            <li>
+                <a href="#" data-searchable>
+                    <span class="icon">🔒</span>
+                    Security
+                </a>
+            </li>
+            <li>
+                <a href="#" data-searchable>
+                    <span class="icon">❓</span>
+                    Help & Support
+                </a>
+            </li>
+        </ul>
+
+        <!-- Sidebar Profile -->
+        <div class="sidebar-profile">
+            <div class="sidebar-profile-avatar" id="sidebarAvatar">AW</div>
+            <div class="sidebar-profile-info">
+                <h4 id="sidebarName">Azurayan G. Wu</h4>
+                <p id="sidebarRole">Admin</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <main class="main-content">
+            <!-- Top Bar -->
+            <center>
+                <div class="top-bar">
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search profile, settings, fields..." oninput="performSearch(this.value)" onkeyup="handleSearchKeyup(event)">
+                        <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
+                    </div>
+                    <div class="top-bar-actions">
+                        <button class="notification-btn">🔔</button>
+                        <button class="notification-btn">⚙️</button>
+                    </div>
+                </div>
+                
+                <!-- Search No Results Message -->
+                <div id="noResults" class="search-no-results hidden">
+                    No results found. Try searching for profile fields, menu items, or settings.
+                </div>
+                
+                <!-- Profile Container -->
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <!-- Profile Header -->
+                        <div class="profile-header" data-searchable>
+                            <div class="profile-avatar-container">
+                                <div class="profile-avatar" id="avatarDisplay">AW</div>
+                                <button class="avatar-upload" onclick="document.getElementById('avatarInput').click()">+</button>
+                                <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="updateAvatar(event)">
+                            </div>
+                            <div class="profile-info">
+                            <h1 id="fullNameDisplay" data-searchable>Azurayan G. Wu</h1>
+                            <p id="emailDisplay" data-searchable>azurayangwu@gmail.com</p>
+                            <div class="profile-actions">
+                                <button class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+                                <button class="btn btn-secondary">View Public Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Form Content -->
+                    <div class="form-content">
+                        <!-- Personal Information Section -->
+                        <div class="form-section" data-searchable>
+                            <h2 class="section-title" data-searchable>Personal Information</h2>
+                            <div class="form-row">
+                                <div class="form-group" data-searchable>
+                                    <label for="firstName" data-searchable>First Name</label>
+                                    <input type="text" id="firstName" value="Azurayan" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('firstName')">Edit</a>
+                                </div>
+                                <div class="form-group" data-searchable>
+                                    <label for="lastName" data-searchable>Last Name</label>
+                                    <input type="text" id="lastName" value="Wu" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('lastName')">Edit</a>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group" data-searchable>
+                                    <label for="email" data-searchable>Email Address</label>
+                                    <input type="email" id="email" value="azurayangwu@gmail.com" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('email')">Edit</a>
+                                </div>
+                                <div class="form-group" data-searchable>
+                                    <label for="phone" data-searchable>Phone Number</label>
+                                    <input type="tel" id="phone" value="+1 (234) 567-890" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('phone')">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information Section -->
+                        <div class="form-section" data-searchable>
+                            <h2 class="section-title" data-searchable>Address Information</h2>
+                            <div class="form-row">
+                                <div class="form-group" data-searchable>
+                                    <label for="street" data-searchable>Street Address</label>
+                                    <input type="text" id="street" value="123 Main Street" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('street')">Edit</a>
+                                </div>
+                                <div class="form-group" data-searchable>
+                                    <label for="city" data-searchable>City</label>
+                                    <input type="text" id="city" value="New York" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('city')">Edit</a>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group" data-searchable>
+                                    <label for="state" data-searchable>State/Province</label>
+                                    <input type="text" id="state" value="NY" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('state')">Edit</a>
+                                </div>
+                                <div class="form-group" data-searchable>
+                                    <label for="zip" data-searchable>ZIP/Postal Code</label>
+                                    <input type="text" id="zip" value="10001" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('zip')">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Information Section -->
+                        <div class="form-section" data-searchable>
+                            <h2 class="section-title" data-searchable>Additional Information</h2>
+                            <div class="form-row">
+                                <div class="form-group" data-searchable>
+                                    <label for="dob" data-searchable>Date of Birth</label>
+                                    <input type="date" id="dob" value="1990-01-15" readonly data-searchable>
+                                    <a href="#" class="edit-link" onclick="enableEdit('dob')">Edit</a>
+                                </div>
+                                <div class="form-group" data-searchable>
+                                    <label for="gender" data-searchable>Gender</label>
+                                    <select id="gender" disabled data-searchable>
+                                        <option value="male" selected>Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                        <option value="prefer-not-to-say">Prefer not to say</option>
+                                    </select>
+                                    <a href="#" class="edit-link" onclick="enableEdit('gender')">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Save Section -->
+                    <div class="save-section">
+                        <button class="btn btn-primary" id="saveBtn" style="display: none;" onclick="saveChanges()">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </center>
+        </main>
+    </div>
+
+    <script>
+        let editMode = false;
+        let searchActive = false;
+        let originalContent = {};
+
+        // Initialize search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Store original content for restoration
+            storeOriginalContent();
+        });
+
+        function storeOriginalContent() {
+            const searchableElements = document.querySelectorAll('[data-searchable]');
+            searchableElements.forEach((element, index) => {
+                originalContent[index] = element.innerHTML;
+            });
+        }
+
+        function performSearch(query) {
+            const searchClear = document.getElementById('searchClear');
+            const noResults = document.getElementById('noResults');
+            
+            // Show/hide clear button
+            if (query.length > 0) {
+                searchClear.style.display = 'block';
+                searchActive = true;
+            } else {
+                searchClear.style.display = 'none';
+                searchActive = false;
+                clearSearch();
+                return;
+            }
+
+            const searchQuery = query.toLowerCase();
+            const searchableElements = document.querySelectorAll('[data-searchable]');
+            let hasResults = false;
+
+            // Clear previous highlights
+            clearHighlights();
+
+            searchableElements.forEach(element => {
+                const text = element.textContent || element.value || '';
+                const parent = getSearchableParent(element);
+                
+                if (text.toLowerCase().includes(searchQuery)) {
+                    // Show matching elements
+                    if (parent) parent.classList.remove('hidden');
+                    element.classList.remove('hidden');
+                    
+                    // Highlight matching text
+                    highlightText(element, searchQuery);
+                    hasResults = true;
+                } else {
+                    // Hide non-matching sections but keep individual fields visible if their section matches
+                    if (isSection(element) || isSidebarItem(element)) {
+                        element.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Special handling for form groups - show if label or input matches
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach(group => {
+                const label = group.querySelector('label');
+                const input = group.querySelector('input, select');
+                const labelText = label ? label.textContent.toLowerCase() : '';
+                const inputValue = input ? (input.value || '').toLowerCase() : '';
+                
+                if (labelText.includes(searchQuery) || inputValue.includes(searchQuery)) {
+                    group.classList.remove('hidden');
+                    group.closest('.form-section').classList.remove('hidden');
+                    hasResults = true;
+                } else if (!group.closest('.form-section').classList.contains('hidden')) {
+                    // Keep visible if section is already visible
+                } else {
+                    group.classList.add('hidden');
+                }
+            });
+
+            // Show/hide no results message
+            if (hasResults) {
+                noResults.classList.add('hidden');
+            } else {
+                noResults.classList.remove('hidden');
+            }
+
+            // Smooth scroll to first result
+            if (hasResults) {
+                const firstVisibleResult = document.querySelector('[data-searchable]:not(.hidden)');
+                if (firstVisibleResult) {
+                    firstVisibleResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        function highlightText(element, query) {
+            if (element.tagName === 'INPUT' || element.tagName === 'SELECT') {
+                // For form inputs, highlight the parent label or add a glow effect
+                const parent = element.closest('.form-group');
+                if (parent) {
+                    parent.style.background = 'rgba(255, 243, 205, 0.3)';
+                    parent.style.borderRadius = '10px';
+                    parent.style.padding = '10px';
+                    parent.style.margin = '5px 0';
+                }
+                return;
+            }
+
+            const text = element.textContent;
+            const regex = new RegExp(`(${query})`, 'gi');
+            const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+            
+            if (highlightedText !== text) {
+                element.innerHTML = highlightedText;
+            }
+        }
+
+        function clearHighlights() {
+            // Remove highlights
+            const highlights = document.querySelectorAll('.highlight');
+            highlights.forEach(highlight => {
+                const parent = highlight.parentNode;
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            });
+
+            // Remove form group highlighting
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach(group => {
+                group.style.background = '';
+                group.style.borderRadius = '';
+                group.style.padding = '';
+                group.style.margin = '';
+            });
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchClear = document.getElementById('searchClear');
+            const noResults = document.getElementById('noResults');
+            
+            searchInput.value = '';
+            searchClear.style.display = 'none';
+            noResults.classList.add('hidden');
+            searchActive = false;
+
+            // Show all elements
+            const hiddenElements = document.querySelectorAll('.hidden');
+            hiddenElements.forEach(element => {
+                element.classList.remove('hidden');
+            });
+
+            // Clear highlights
+            clearHighlights();
+        }
+
+        function handleSearchKeyup(event) {
+            if (event.key === 'Escape') {
+                clearSearch();
+            }
+        }
+
+        function getSearchableParent(element) {
+            let parent = element.parentElement;
+            while (parent && !parent.classList.contains('form-section') && !parent.classList.contains('sidebar-menu')) {
+                parent = parent.parentElement;
+            }
+            return parent;
+        }
+
+        function isSection(element) {
+            return element.classList.contains('form-section') || element.classList.contains('profile-header');
+        }
+
+        function isSidebarItem(element) {
+            return element.closest('.sidebar-menu') !== null;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.overlay');
+            const hamburger = document.querySelector('.hamburger');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            // Hide hamburger when sidebar is open on mobile
+            if (sidebar.classList.contains('open')) {
+                hamburger.classList.add('hidden');
+            } else {
+                hamburger.classList.remove('hidden');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.overlay');
+            const hamburger = document.querySelector('.hamburger');
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            
+            // Show hamburger when sidebar is closed
+            hamburger.classList.remove('hidden');
+        }
+
+        function enableEdit(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.removeAttribute('readonly');
+            field.removeAttribute('disabled');
+            field.focus();
+            
+            document.getElementById('saveBtn').style.display = 'inline-block';
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            const fields = ['firstName', 'lastName', 'email', 'phone', 'street', 'city', 'state', 'zip', 'dob', 'gender'];
+            const saveBtn = document.getElementById('saveBtn');
+            
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (editMode) {
+                    field.removeAttribute('readonly');
+                    field.removeAttribute('disabled');
+                } else {
+                    field.setAttribute('readonly', true);
+                    if (fieldId === 'gender') {
+                        field.setAttribute('disabled', true);
+                    }
+                }
+            });
+            
+            saveBtn.style.display = editMode ? 'inline-block' : 'none';
+            
+            const editBtn = document.querySelector('.btn-primary');
+            editBtn.textContent = editMode ? 'Cancel Edit' : 'Edit Profile';
+        }
+
+        function updateAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarDisplay = document.getElementById('avatarDisplay');
+                    const sidebarAvatar = document.getElementById('sidebarAvatar');
+                    
+                    // Update main avatar
+                    avatarDisplay.innerHTML = `<img src="${e.target.result}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                    
+                    // Update sidebar avatar
+                    sidebarAvatar.innerHTML = `<img src="${e.target.result}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function getInitials(firstName, lastName) {
+            const first = firstName ? firstName.charAt(0).toUpperCase() : '';
+            const last = lastName ? lastName.charAt(0).toUpperCase() : '';
+            return first + last;
+        }
+
+        function saveChanges() {
+            // Get updated values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const fullName = `${firstName} ${lastName}`;
+            
+            // Update main profile display
+            document.getElementById('fullNameDisplay').textContent = fullName;
+            document.getElementById('emailDisplay').textContent = email;
+            
+            // Update sidebar profile - with multiple selection methods
+            let sidebarNameElement = document.getElementById('sidebarName');
+            if (!sidebarNameElement) {
+                // Fallback: try selecting by class or querySelector
+                sidebarNameElement = document.querySelector('.sidebar-profile-info h4');
+            }
+            
+            if (sidebarNameElement) {
+                sidebarNameElement.textContent = fullName;
+                console.log('Updated sidebar name to:', fullName);
+            } else {
+                console.error('Could not find sidebar name element');
+                // Force update by finding the sidebar profile section
+                const sidebarProfile = document.querySelector('.sidebar-profile-info');
+                if (sidebarProfile) {
+                    const h4Element = sidebarProfile.querySelector('h4');
+                    if (h4Element) {
+                        h4Element.textContent = fullName;
+                        console.log('Updated sidebar name via fallback method');
+                    }
+                }
+            }
+            
+            // Update avatars with new initials if no custom image is set
+            const avatarDisplay = document.getElementById('avatarDisplay');
+            let sidebarAvatar = document.getElementById('sidebarAvatar');
+            if (!sidebarAvatar) {
+                sidebarAvatar = document.querySelector('.sidebar-profile-avatar');
+            }
+            
+            // Only update initials if no custom image is currently set
+            if (avatarDisplay && sidebarAvatar) {
+                if (!avatarDisplay.querySelector('img') && !sidebarAvatar.querySelector('img')) {
+                    const newInitials = getInitials(firstName, lastName);
+                    avatarDisplay.textContent = newInitials;
+                    sidebarAvatar.textContent = newInitials;
+                    console.log('Updated avatars to initials:', newInitials);
+                }
+            }
+            
+            // Make fields readonly again
+            const fields = ['firstName', 'lastName', 'email', 'phone', 'street', 'city', 'state', 'zip', 'dob'];
+            fields.forEach(fieldId => {
+                document.getElementById(fieldId).setAttribute('readonly', true);
+            });
+            document.getElementById('gender').setAttribute('disabled', true);
+            
+            // Hide save button
+            document.getElementById('saveBtn').style.display = 'none';
+            editMode = false;
+            
+            // Update edit button text
+            document.querySelector('.btn-primary').textContent = 'Edit Profile';
+            
+            // Show success message
+            alert('Profile updated successfully!');
+            
+            // Force a re-render by triggering a small DOM change
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.style.display = 'none';
+                setTimeout(() => {
+                    sidebar.style.display = '';
+                }, 10);
+            }
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !hamburger.contains(event.target) &&
+                sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (window.innerWidth > 768) {
+                closeSidebar();
+                // Ensure hamburger is visible on larger screens (though it's hidden by CSS)
+                hamburger.classList.remove('hidden');
+            } else {
+                // On mobile, check if sidebar is open and hide hamburger accordingly
+                if (sidebar.classList.contains('open')) {
+                    hamburger.classList.add('hidden');
+                } else {
+                    hamburger.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Enhanced search with keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + F to focus search
+            if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+                event.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+    </script>
+</body>
+</html>
