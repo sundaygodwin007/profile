@@ -1,579 +1,731 @@
-      * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 280px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 0 20px 20px 0;
-            padding: 20px;
-            position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
-            transform: translateX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .sidebar-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-icon {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            display: none;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 8px;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            color: #666;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateX(4px);
-        }
-
-        .sidebar-menu .icon {
-            margin-right: 12px;
-            font-size: 18px;
-            width: 20px;
-        }
-
-        /* Search highlight styles */
-        .highlight {
-            background-color: #fff3cd;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-weight: bold;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .search-no-results {
-            text-align: center;
-            color: #666;
-            font-style: italic;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        /* Bottom Profile Section in Sidebar */
-        .sidebar-profile {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 12px;
-        }
-
-        .sidebar-profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            margin-right: 12px;
-        }
-
-        .sidebar-profile-info h4 {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 2px;
-        }
-
-        .sidebar-profile-info p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* Hamburger Menu */
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            border-radius: 10px;
-            padding: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .hamburger.hidden {
-            opacity: 0;
-            transform: translateX(-100px);
-            pointer-events: none;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: #333;
-            margin: 5px 0;
-            transition: 0.3s;
-            border-radius: 2px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Top Bar */
-        .top-bar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .search-container {
-            position: relative;
-            width: 300px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 16px 12px 45px;
-            border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            placeholder-color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-clear {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            font-size: 18px;
-            display: none;
-        }
-
-        .top-bar-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .notification-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Profile Container */
-        .profile-container {
-            padding: 30px;
-            max-width: 900px;
-        }
-
-        /* Profile Card */
-        .profile-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 0;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            text-align: left;
-        }
-
-        /* Profile Header */
-        .profile-header {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            padding: 40px 40px 30px;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .profile-avatar-container {
-            position: relative;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 28px;
-            font-weight: bold;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .avatar-upload {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: #667eea;
-            border: 3px solid white;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .profile-info h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 700;
-        }
-
-        .profile-info p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .profile-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #f8f9ff;
-            color: #667eea;
-            border: 1px solid #e0e7ff;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Form Content */
-        .form-content {
-            padding: 40px;
-        }
-
-        .form-section {
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: #333;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 14px 16px;
-            border: 2px solid #f0f0f0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-group input[readonly] {
-            background: #f8f9fa;
-            color: #666;
-        }
-
-        .edit-link {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 8px;
-            display: inline-block;
-        }
-
-        .edit-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Save Button */
-        .save-section {
-            text-align: center;
-            padding: 20px 0;
-            border-top: 1px solid #f0f0f0;
-            background: #fafafa;
-        }
-
-        #saveBtn {
-            padding: 14px 40px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 1024px) {
-            .search-container {
-                width: 200px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-
-            .sidebar {
-                transform: translateX(-100%);
-                width: 100%;
-                border-radius: 0;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .close-btn {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .top-bar {
-                padding: 15px 20px 15px 80px; /* Added left padding to move content right of hamburger */
-            }
-
-            .search-container {
-                width: 150px;
-            }
-
-            .profile-container {
-                padding: 15px;
-            }
-
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-                padding: 30px 20px 25px;
-            }
-
-            .profile-info h1 {
-                font-size: 24px;
-            }
-
-            .form-content {
-                padding: 25px 20px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .profile-header {
-                padding: 25px 15px 20px;
-            }
-
-            .profile-avatar {
-                width: 80px;
-                height: 80px;
-                font-size: 24px;
-            }
-
-            .avatar-upload {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
-            }
-
-            .form-content {
-                padding: 20px 15px;
-            }
-
-            .btn {
-                padding: 10px 20px;
-                font-size: 13px;
-            }
-        }
- 
+/* ========================
+   BASE STYLES - Core CSS
+   ======================== */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* App Container */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 0 20px 20px 0;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-icon {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    display: none;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 8px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #666;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateX(4px);
+}
+
+.sidebar-menu .icon {
+    margin-right: 12px;
+    font-size: 18px;
+    width: 20px;
+}
+
+/* Sidebar Profile */
+.sidebar-profile {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+}
+
+.sidebar-profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+.sidebar-profile-info h4 {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.sidebar-profile-info p {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hamburger.hidden {
+    opacity: 0;
+    transform: translateX(-100px);
+    pointer-events: none;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 5px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Top Bar */
+.top-bar {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Search Styles */
+.search-container {
+    position: relative;
+    width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px 12px 45px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    placeholder-color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-clear {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 18px;
+    display: none;
+}
+
+.top-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notification-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+/* Search functionality styles */
+.highlight {
+    background-color: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.search-no-results {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+/* Profile Container */
+.profile-container {
+    padding: 30px;
+    max-width: 900px;
+}
+
+/* Profile Card */
+.profile-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: left;
+}
+
+/* Profile Header */
+.profile-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    padding: 40px 40px 30px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-avatar-container {
+    position: relative;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.avatar-upload {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #667eea;
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.profile-info h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 700;
+}
+
+.profile-info p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-secondary {
+    background: #f8f9ff;
+    color: #667eea;
+    border: 1px solid #e0e7ff;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Content */
+.form-content {
+    padding: 40px;
+}
+
+.form-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 14px 16px;
+    border: 2px solid #f0f0f0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input[readonly] {
+    background: #f8f9fa;
+    color: #666;
+}
+
+.edit-link {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+}
+
+/* Save Section */
+.save-section {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #f0f0f0;
+    background: #fafafa;
+}
+
+#saveBtn {
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+/* ========================
+   MOBILE STYLES
+   Media Query: (max-width: 768px)
+   ======================== */
+
+@media (max-width: 768px) {
+    /* Show hamburger menu on mobile */
+    .hamburger {
+        display: block !important;
+    }
+
+    /* Mobile sidebar behavior */
+    .sidebar {
+        transform: translateX(-100%);
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* Show close button on mobile */
+    .close-btn {
+        display: block !important;
+    }
+
+    /* Remove left margin on mobile */
+    .main-content {
+        margin-left: 0;
+    }
+
+    /* Mobile top bar adjustments */
+    .top-bar {
+        padding: 15px 20px 15px 80px; /* Added left padding to move content right of hamburger */
+    }
+
+    /* Smaller search container on mobile */
+    .search-container {
+        width: 150px;
+    }
+
+    /* Mobile profile container */
+    .profile-container {
+        padding: 15px;
+    }
+
+    /* Mobile profile header layout */
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px 25px;
+    }
+
+    /* Mobile profile title size */
+    .profile-info h1 {
+        font-size: 24px;
+    }
+
+    /* Mobile form content padding */
+    .form-content {
+        padding: 25px 20px;
+    }
+
+    /* Single column form layout on mobile */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    /* Extra small mobile profile header */
+    .profile-header {
+        padding: 25px 15px 20px;
+    }
+
+    /* Smaller avatar on small mobile */
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 24px;
+    }
+
+    .avatar-upload {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    /* Minimal form padding on small mobile */
+    .form-content {
+        padding: 20px 15px;
+    }
+
+    /* Smaller buttons on small mobile */
+    .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+
+    /* Even smaller search on tiny screens */
+    .search-container {
+        width: 120px;
+    }
+
+    /* Tighter top bar spacing */
+    .top-bar {
+        padding: 10px 15px 10px 70px;
+    }
+
+    /* Smaller notification buttons */
+    .notification-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Smaller sidebar profile elements */
+    .sidebar-profile-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .sidebar-profile-info h4 {
+        font-size: 13px;
+    }
+
+
+
+    /* ========================
+   DESKTOP STYLES
+   ======================== */
+
+/* Desktop-specific responsive adjustments */
+@media (min-width: 769px) {
+    /* Ensure sidebar is always visible on desktop */
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+    
+    /* Hide hamburger menu on desktop */
+    .hamburger {
+        display: none !important;
+    }
+    
+    /* Ensure close button is hidden on desktop */
+    .close-btn {
+        display: none !important;
+    }
+    
+    /* Ensure main content has proper margin on desktop */
+    .main-content {
+        margin-left: 280px;
+    }
+    
+    /* Desktop top bar padding */
+    .top-bar {
+        padding: 20px 30px;
+    }
+    
+    /* Full width search on desktop */
+    .search-container {
+        width: 300px;
+    }
+    
+    /* Desktop profile header layout */
+    .profile-header {
+        flex-direction: row;
+        text-align: left;
+        padding: 40px 40px 30px;
+    }
+    
+    /* Desktop form layout */
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    /* Desktop form content padding */
+    .form-content {
+        padding: 40px;
+    }
+    
+    /* Desktop profile container */
+    .profile-container {
+        padding: 30px;
+    }
+    
+    /* Desktop profile info */
+    .profile-info h1 {
+        font-size: 32px;
+    }
+    
+    /* Desktop avatar sizes */
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 28px;
+    }
+    
+    .avatar-upload {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    /* Desktop button sizes */
+    .btn {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+}
+
+/* Large desktop adjustments */
+@media (min-width: 1025px) {
+    /* Larger search container on big screens */
+    .search-container {
+        width: 400px;
+    }
+    
+    /* More padding for large screens */
+    .profile-container {
+        padding: 40px;
+    }
+    
+    /* Larger form content padding */
+    .form-content {
+        padding: 50px;
+    }
+}
